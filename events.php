@@ -1,4 +1,5 @@
 <?php
+global $conn;
 include 'db.php';
 
 $action = isset($_GET['action']) ? $_GET['action'] : '';

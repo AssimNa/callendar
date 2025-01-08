@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>FullCalendar Integration with Native PHP</title>
+    <title>Calendar</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -53,8 +53,8 @@
                                 data: { title: userInput.value, start: startFormatted, end: endFormatted },
                             success: function () {
                                 calendar.fullCalendar('refetchEvents');
-                                alert("Added Successfully");
                                 modal.style.display = "none";
+                                console.log("Added Successfully");
                             }
                         });
                     } else {
@@ -98,7 +98,7 @@
                             success: function () {
                                 calendar.fullCalendar('refetchEvents');
                                 modal.style.display = "none";
-                                alert("Event Removed");
+                                console.log("Event Removed");
                             }
                         });
                     });
@@ -112,7 +112,7 @@
                                 success: function () {
                                     calendar.fullCalendar('refetchEvents');
                                     modal.style.display = "none";
-                                    alert("Event Updated");
+                                    console.log("Event Updated");
                                 }
                             });
                         } else {
@@ -122,7 +122,24 @@
                 }
             });
         });
- </script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const createButton = document.getElementById("createButton");
+            const dropdownMenu = document.getElementById("dropdownMenu");
+
+            // Afficher ou cacher le menu au clic sur le bouton
+            createButton.addEventListener("click", () => {
+                dropdownMenu.style.display = dropdownMenu.style.display === "block" ? "none" : "block";
+            });
+
+            // Cacher le menu lorsque l'utilisateur clique en dehors
+            window.addEventListener("click", (event) => {
+                if (!createButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                    dropdownMenu.style.display = "none";
+                }
+            });
+        });
+
+    </script>
     <style>
         /* Modal styles */
         .modal {
@@ -171,10 +188,63 @@
             background-color: green;
             color: white;
         }
+        /* Style pour le bouton Créer */
+        .create-button {
+            background-color: #f1f1f1;
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        /* Style pour le menu déroulant */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            margin-top: 5px;
+            z-index: 1000;
+            width: 200px;
+            padding: 10px 0;
+        }
+
+        .dropdown-item {
+            padding: 10px 20px;
+            display: block;
+            text-decoration: none;
+            color: black;
+            font-size: 14px;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
-    <div class="modal" id="myModal">
+        <div class="dropdown">
+            <button class="create-button" id="createButton">+ Créer</button>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <a href="#" class="dropdown-item">Événement</a>
+                <a href="#" class="dropdown-item">Tâche</a>
+                <a href="#" class="dropdown-item">Planning des rendez-vous</a>
+            </div>
+        </div>
+
+        <div class="modal" id="myModal">
         <div class="modal-content">
             <h2 id="details">Enter Details</h2>
             <input type="text" id="userInput" placeholder="Type something...">
@@ -195,6 +265,7 @@
     </div>
 
     <script>
+
         // JavaScript for modal functionality
         const modal = document.getElementById("myModal");
         const openModalBtn = document.getElementById("openModal");
@@ -223,5 +294,9 @@
             }
         });
     </script>
+
+
+
+
 </body>
 </html>
